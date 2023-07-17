@@ -1,0 +1,53 @@
+name: kaniko action build
+description: build a docker image
+inputs:
+  context:
+    description: 'path to the dockerfile'
+  dockerfile:
+    description: 'default Dockerfile'
+    default: Dockerfile
+  image:
+    description: 'docker image name without tags, mutiple image can be separated by comma, this params is conflict with destination, please choose one of them'
+  destination:
+    description: 'docker image name with tags, mutiple destination can be separated by comma'
+  build-arg:
+    description: 'build arg'
+  insecure:
+    description: 'allow insecure connection to registry'
+    default: false
+  insecure-pull:
+    description: 'allow insecure pull'
+    default: false
+  insecure-registry:
+    description: 'allow insecure registry'
+  skip-tls-verify:
+    description: 'skip tls verify'
+    default: false
+  skip-tls-verify-pull:
+    description: 'skip tls verify pull'
+    default: false
+  skip-unused-stages:
+    description: 'skip unused stages'
+    default: true
+  label:
+    description: 'label'
+  no-push:
+    description: 'no push'
+    default: false
+  cache:
+    description: 'enable cache'
+    default: false
+  cache-repo:
+    description: 'cache repo'
+  registry-mirror:
+    description: 'registry mirror'
+    default: 'docker.mirrors.sjtug.sjtu.edu.cn,mirror.baidubce.com,index.docker.io'
+  dockerconfig-dir:
+    description: 'docker config file location, which mount to kaniko '
+    default: /.docker
+
+runs:
+  using: composite
+  steps:
+    - run: |
+        python $GITHUB_ACTION_PATH/main.py
