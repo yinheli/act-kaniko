@@ -6,12 +6,13 @@ import subprocess
 def get_var(name, default_val = '',):
     return os.environ.get(f'INPUT_{name}'.upper(), default_val)
 
-cmd = f"docker run --rm -v {os.environ.get('JOB_CONTAINER_NAME')}:/workspace -v /data/cache:/cache"
+cmd = f"docker run --rm -v {os.environ.get('JOB_CONTAINER_NAME')}:/workspace"
+cmd += " -v /data/cache:/cache"
 
 dockerconfig_dir = get_var('dockerconfig-dir', '/.docker')
 cmd += f" -v {dockerconfig_dir}:/kaniko/.docker"
 
-cmd += f" gcr.io/kaniko-project/executor:v1.12.1"
+cmd += " gcr.io/kaniko-project/executor:v1.12.1"
 
 context = os.path.join('/workspace', get_var('context'))
 cmd += f" --context=dir://{context}"
